@@ -15,6 +15,7 @@ import java.util.Random;
 public class Sampling {
     private Tester tester = new Tester();
     public static final double BOOM_LENGTH = 0.05;
+    public static final double SAMPLES_NUM = 1000;
 
     public static List<PolarConfig> samples = new ArrayList<>();
 
@@ -28,7 +29,7 @@ public class Sampling {
         //number of asv
         int asvNum = asv;
 
-        for (int i=0;i<1000;i++){//sampling the configurations
+        for (int i=0;i<SAMPLES_NUM;i++){//sampling the configurations
             boolean flag=true;
 
             while(flag) {//sample the point until it has no collision

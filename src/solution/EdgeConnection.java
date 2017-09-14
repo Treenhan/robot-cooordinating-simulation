@@ -1,5 +1,6 @@
 package solution;
 
+import problem.ASVConfig;
 import problem.ProblemSpec;
 
 import java.awt.geom.Point2D;
@@ -19,7 +20,7 @@ public class EdgeConnection {
     public static void connectEdges(ProblemSpec ps,int numASV) {
         int counter=0;//for debugging
 
-        ArrayList<PolarConfig> samples = (ArrayList<PolarConfig>) Sampling.samples;
+        ArrayList<PolarConfig> samples = new ArrayList<PolarConfig>(Sampling.samples);
 
         Flag flag;
 
@@ -34,7 +35,11 @@ public class EdgeConnection {
 
                 if(Point2D.distance(currentVertex.getPoint().getX(),currentVertex.getPoint().getY(),each.getPoint().getX(),each.getPoint().getY())<=MAX_RADIUS){//if others are inside this circle
                     EdgeCollision.isEdgeCollisionFree(ps,currentVertex,each,numASV,flag);//this is good
+
+                    //debugging
                     System.out.println("OK"+counter);
+
+
                     counter++;
 
                     if(flag.getFlag()){//if the other point is collision free
@@ -47,4 +52,43 @@ public class EdgeConnection {
             samples.remove(currentVertex);
         }
     }
+
+    /**
+     * connect the init and the goal to the connected graph
+     */
+    public static void connectEdgesForTargets(ProblemSpec ps, int numASV, ASVConfig start, ASVConfig end) {
+        int counter=0;//for debugging
+
+        PolarConfig startPolar = start.converToPolar();
+        PolarConfig endPolar = end.converToPolar();
+
+        ArrayList<PolarConfig> samples = new ArrayList<PolarConfig>(Sampling.samples);
+
+        Flag flag;
+
+        PolarConfig currentVertex = startPolar;
+
+        for(int i=0;i<2;i++){
+            for(PolarConfig each : samples){
+                flag = new Flag(true);//reset the flag
+
+                if(Point2D.distance(currentVertex.getPoint().getX(),currentVertex.getPoint().getY(),each.getPoint().getX(),each.getPoint().getY())<=MAX_RADIUS){//if others are inside this circle
+                    EdgeCollision.isEdgeCollisionFree(ps,currentVertex,each,numASV,flag);//this is good
+
+                    //debugging
+                    if(i==0)System.out.println("start-OK"+counter);
+                    else System.out.println("end-OK"+counter);
+
+                    counter++;
+
+                    if(flag.getFlag()){//if the other point is collision free
+                        AdjacencyList.addEdge(currentVertex,each);
+                    }
+                }
+            }
+            currentVertex=endPolar;
+        }
+    }
+
+
 }

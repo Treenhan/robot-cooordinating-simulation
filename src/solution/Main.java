@@ -17,10 +17,16 @@ import java.util.List;
 public class Main {
     public static void main(String [] args) throws java.io.IOException {
         ProblemSpec problemSpec = new ProblemSpec();
-        problemSpec.loadProblem("testcases/3ASV-easy.txt");//all configurations are in here now
+        problemSpec.loadProblem("testcases/7ASV.txt");//all configurations are in here now
 
         Sampling.startSampling(problemSpec,problemSpec.getASVCount());//start sampling
-        EdgeConnection.connectEdges(problemSpec,problemSpec.getASVCount());//connect edges
+        EdgeConnection.connectEdges(problemSpec,problemSpec.getASVCount());//connect edges between samples
+
+        //add start and end point to the graph
+        EdgeConnection.connectEdgesForTargets(problemSpec,problemSpec.getASVCount(),problemSpec.getInitialState(),problemSpec.getGoalState());
+
+        //start searching
+
         System.out.println("DONE");
 
     /*
