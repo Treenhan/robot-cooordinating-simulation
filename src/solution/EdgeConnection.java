@@ -56,11 +56,8 @@ public class EdgeConnection {
     /**
      * connect the init and the goal to the connected graph
      */
-    public static void connectEdgesForTargets(ProblemSpec ps, int numASV, ASVConfig start, ASVConfig end) {
+    public static void connectEdgesForTargets(ProblemSpec ps, int numASV, PolarConfig startPolar, PolarConfig endPolar) {
         int counter=0;//for debugging
-
-        PolarConfig startPolar = start.converToPolar();
-        PolarConfig endPolar = end.converToPolar();
 
         ArrayList<PolarConfig> samples = new ArrayList<PolarConfig>(Sampling.samples);
 

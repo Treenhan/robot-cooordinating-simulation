@@ -1,15 +1,12 @@
 package solution;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Treenhan on 9/13/17.
  */
 public class AdjacencyList {
-    private static Map<PolarConfig,List<PolarConfig>> adjacencyList = new HashMap<>();
+    public static Map<PolarConfig,List<PolarConfig>> adjacencyList = new HashMap<>();
 
     /**
      * adding vertices to the map
@@ -33,6 +30,17 @@ public class AdjacencyList {
         slist.add(destination);
         List<PolarConfig> dlist = adjacencyList.get(destination);
         dlist.add(source);
+    }
+
+    /**
+     * get all the children of a node
+     */
+    public static List<PolarConfig> getChildren(PolarConfig node){
+        List<PolarConfig> children;
+
+        children = adjacencyList.get(node);
+
+        return children;
     }
 
 }

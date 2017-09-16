@@ -162,7 +162,7 @@ public class ASVConfig {
 	 * convert Cartesian coordinate to Polar Coordinate
 	 * @return Polar Coordinate of the ASVs
 	 */
-	public PolarConfig converToPolar(){
+	public PolarConfig convertToPolar(){
 		Point2D initPoint;
 		Point2D endPoint;
 
@@ -174,8 +174,11 @@ public class ASVConfig {
 		List<Double> angles = new ArrayList();//this is angles list
 
 		for(int i=0;i<asvPositions.size()-1;i++){
+
 			//get the first point
 			initPoint = asvPositions.get(i);
+
+			if(i==0) point = initPoint;//add the first point in
 
 			//get the next point
 			endPoint = asvPositions.get(i+1);

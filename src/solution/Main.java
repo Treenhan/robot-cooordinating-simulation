@@ -1,14 +1,6 @@
 package solution;
 
-import problem.ASVConfig;
 import problem.ProblemSpec;
-import tester.Tester;
-
-import java.awt.*;
-import java.awt.geom.Point2D;
-import java.lang.Math;
-import java.util.*;
-import java.util.List;
 
 
 /**
@@ -17,13 +9,19 @@ import java.util.List;
 public class Main {
     public static void main(String [] args) throws java.io.IOException {
         ProblemSpec problemSpec = new ProblemSpec();
-        problemSpec.loadProblem("testcases/7ASV.txt");//all configurations are in here now
+        problemSpec.loadProblem("testcases/7ASV-easy.txt");//all configurations are in here now
 
         Sampling.startSampling(problemSpec,problemSpec.getASVCount());//start sampling
         EdgeConnection.connectEdges(problemSpec,problemSpec.getASVCount());//connect edges between samples
 
+        PolarConfig initialPolar = problemSpec.getInitialState().convertToPolar();
+        PolarConfig goalPolar = problemSpec.getGoalState().convertToPolar();
+
         //add start and end point to the graph
-        EdgeConnection.connectEdgesForTargets(problemSpec,problemSpec.getASVCount(),problemSpec.getInitialState(),problemSpec.getGoalState());
+        EdgeConnection.connectEdgesForTargets(problemSpec,problemSpec.getASVCount(),initialPolar,goalPolar);
+
+        Search search = new Search(initialPolar,goalPolar);
+        search.startBFSSearch();
 
         //start searching
 
