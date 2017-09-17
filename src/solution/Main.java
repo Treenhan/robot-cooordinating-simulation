@@ -9,9 +9,12 @@ import problem.ProblemSpec;
 public class Main {
     public static void main(String [] args) throws java.io.IOException {
         ProblemSpec problemSpec = new ProblemSpec();
-        problemSpec.loadProblem("testcases/7ASV-easy.txt");//all configurations are in here now
+        problemSpec.loadProblem("testcases/3ASV-easy.txt");//all configurations are in here now
 
         Sampling.startSampling(problemSpec,problemSpec.getASVCount());//start sampling
+
+       // Sampling.startEdgeSampling(problemSpec,problemSpec.getASVCount());//start edge sampling
+
         EdgeConnection.connectEdges(problemSpec,problemSpec.getASVCount());//connect edges between samples
 
         PolarConfig initialPolar = problemSpec.getInitialState().convertToPolar();

@@ -12,7 +12,7 @@ import java.util.Properties;
  * Created by Treenhan on 9/13/17.
  */
 public class EdgeConnection {
-    public static final double MAX_RADIUS = 0.05;
+    public static final double MAX_RADIUS = 0.1;
 
     /**
      * connect all the graph together

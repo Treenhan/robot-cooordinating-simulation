@@ -555,6 +555,7 @@ public class Tester {
 		return false;
 	}
 
+
 	/**
 	 * Checks that the total cost of the solution is correctly calculated.
 	 */

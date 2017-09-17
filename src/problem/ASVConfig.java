@@ -34,6 +34,18 @@ public class ASVConfig {
 	}
 
 	/**
+	 *ASV constructor for only a single point
+	 *
+	 * @param coords
+	 *            the x- and y-coordinates of the ASVs.
+	 */
+
+	public ASVConfig(Point2D point) {
+			asvPositions.add(point);
+	}
+
+
+	/**
 	 * Constructs an ASVConfig from a space-separated string of x- and y-
 	 * coordinates
 	 *
