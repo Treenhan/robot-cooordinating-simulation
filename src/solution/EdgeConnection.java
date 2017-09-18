@@ -36,14 +36,13 @@ public class EdgeConnection {
                 if(Point2D.distance(currentVertex.getPoint().getX(),currentVertex.getPoint().getY(),each.getPoint().getX(),each.getPoint().getY())<=MAX_RADIUS){//if others are inside this circle
                     EdgeCollision.isEdgeCollisionFree(ps,currentVertex,each,numASV,flag);//this is good
 
-                    //debugging
-                    System.out.println("OK"+counter);
-
-
                     counter++;
 
                     if(flag.getFlag()){//if the other point is collision free
                         AdjacencyList.addEdge(currentVertex,each);
+
+                        //debugging
+                        System.out.println("add edge number: "+counter);
                     }
                 }
             }

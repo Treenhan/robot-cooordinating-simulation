@@ -13,13 +13,15 @@ public class Search {
     /**
      * constructor to initialize variables
      */
-    Search(PolarConfig startConfig, PolarConfig endConfig){
+    Search(PolarConfig startConfig, PolarConfig endConfig,int num){
         start = startConfig;
         end = endConfig;
+        numASV=num;
     }
 
     private PolarConfig start;
     private PolarConfig end;
+    private int numASV;
 
     public static Map<PolarConfig,PolarConfig> parents;//containing parents//TODO get the parents out
 
@@ -28,7 +30,10 @@ public class Search {
     /**
      * main search using BFS
      */
-    public void startBFSSearch(){
+    public void startBFSSearch()throws java.io.IOException{
+        Flag foundSolution = new Flag(false);
+
+        Writer writer = new Writer("solution.txt",start,end,numASV);
         parents = new HashMap<>(); //clean the parents
         visited = new HashSet<>();//clean the visited list
 
@@ -37,32 +42,44 @@ public class Search {
         queue.add(start);//add the first element
         markVisited(start);//mark the first element as visited
 
-        while(!queue.isEmpty()){
+        while(!queue.isEmpty()&& !foundSolution.getFlag()){
             PolarConfig current = queue.remove();
-
-            if(current==end) System.out.println("WE ARE WINNERSSS!!!");//stop condition
 
             markVisited(current);
 
             List<PolarConfig> successors;
             successors=getSuccessors(current);//get the children
 
-            while(!successors.isEmpty()){
+            while(!successors.isEmpty() && !foundSolution.getFlag()){
 
                 PolarConfig newChild = successors.get(0);
 
+                if(newChild==end) {
+                    parents.put(newChild,current);
+                    System.out.println("WE ARE WINNERSSS!!!");//stop condition
+                    foundSolution.setFlag(true);
+                    writer.printPath();
+                    visited.add(newChild);
+                    break;
+                }
+
                 //debugging
                 System.out.println("visiting: "+newChild);
+
                 if(!visited.contains(newChild)){//if this guy is not visited yet
                     queue.add(newChild);
                     visited.add(newChild);
+                    parents.put(newChild,current);
                 }
                 successors.remove(0);
             }
         }
 
-        if(visited.contains(end)) System.out.println("WE ARE WINNERSSS!!!");
-        else System.out.println("WE ARE losersss");
+        if(!visited.contains(end)) {
+            System.out.println("WE ARE losersss");
+            writer.closeWriter();
+        }
+
 
 
     }

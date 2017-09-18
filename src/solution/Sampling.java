@@ -15,8 +15,8 @@ import java.util.Random;
 public class Sampling {
     private Tester tester = new Tester();
     public static final double BOOM_LENGTH = 0.05;
-    public static final double SAMPLES_NUM = 2000;
-    public static final double COLLISION_SAMPLES_NUM = 5;
+    public static final double SAMPLES_NUM = 5000;
+    public static final double COLLISION_SAMPLES_NUM = 10 ;
     public static final double COLLISION_SAMPLING = 0.03;
 
     public static List<PolarConfig> samples = new ArrayList<>();
@@ -27,6 +27,8 @@ public class Sampling {
         PolarConfig polarConfig;
         ASVConfig asvConfig;
         Tester tester = new Tester();
+
+        int counter=0;//debug
 
         //number of asv
         int asvNum = asv;
@@ -50,9 +52,12 @@ public class Sampling {
                 asvConfig = polarConfig.convertToRec();//convert to rec config
 
                 //TODO check the area or convex
-                if (!tester.hasCollision(asvConfig, ps.getObstacles()) && tester.hasEnoughArea(asvConfig) && tester.isConvex(asvConfig)) {
+                if (!tester.hasCollision(asvConfig, ps.getObstacles()) && tester.hasEnoughArea(asvConfig) && tester.isConvex(asvConfig) && tester.fitsBounds(asvConfig)) {
                     samples.add(polarConfig);
                     flag = false;
+
+                    //debug
+                    System.out.println("add sample number: "+counter++);
                 }
 
             }
@@ -116,7 +121,7 @@ public class Sampling {
     /**
      * this function construct a sample step by step
      */
-    public static void stepConfigConstruction(ProblemSpec ps, Point2D initPoint, int numASV){
+    public static void stepConfigConstruction(ProblemSpec ps, Point2D initPoint, int numASV){//TODO
         Point2D point=initPoint;
         PolarConfig polarConfig;
         ASVConfig asvConfig;
@@ -153,7 +158,7 @@ public class Sampling {
 
     }
 
-    public static double singleStepConfigConstruction(ProblemSpec ps, Point2D initPoint){
+    public static double singleStepConfigConstruction(ProblemSpec ps, Point2D initPoint){//TODO
         PolarConfig polarConfig;
         ASVConfig asvConfig;
         Tester tester = new Tester();

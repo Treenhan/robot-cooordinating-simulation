@@ -9,7 +9,7 @@ import problem.ProblemSpec;
 public class Main {
     public static void main(String [] args) throws java.io.IOException {
         ProblemSpec problemSpec = new ProblemSpec();
-        problemSpec.loadProblem("testcases/3ASV-easy.txt");//all configurations are in here now
+        problemSpec.loadProblem("testcases/7ASV.txt");//all configurations are in here now
 
         Sampling.startSampling(problemSpec,problemSpec.getASVCount());//start sampling
 
@@ -23,12 +23,13 @@ public class Main {
         //add start and end point to the graph
         EdgeConnection.connectEdgesForTargets(problemSpec,problemSpec.getASVCount(),initialPolar,goalPolar);
 
-        Search search = new Search(initialPolar,goalPolar);
+        Search search = new Search(initialPolar,goalPolar,problemSpec.getASVCount());
         search.startBFSSearch();
 
         //start searching
 
         System.out.println("DONE");
+
 
     /*
     then use hasCollision() to check your configuration with an obstacle
