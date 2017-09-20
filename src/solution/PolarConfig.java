@@ -52,6 +52,18 @@ public class PolarConfig {
         return list;
     }
 
+    public static double boundAngle(double angle){
+        if(angle>Math.PI) {
+            angle -= 2 * Math.PI;
+            return angle;
+        }
+        else if(angle<-Math.PI) {
+            angle+=2*Math.PI;
+            return angle;
+        }else return angle;
+
+    }
+
     /**
      * constructor to creat a polar config based on an array
      */
