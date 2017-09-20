@@ -15,10 +15,10 @@ import java.util.Random;
 public class Sampling {
     private Tester tester = new Tester();
     public static final double BOOM_LENGTH = 0.05;
-    public static final double SAMPLES_NUM = 6000;
+    public static final double SAMPLES_NUM = 1000;
     public static final double COLLISION_SAMPLES_NUM = 5 ;
     public static final double COLLISION_SAMPLING = 0.03;
-    public static final double STRAIGHT_SAMPLES_NUM = 500 ;
+    public static final double STRAIGHT_SAMPLES_NUM = 100 ;
 
     public static List<PolarConfig> samples = new ArrayList<>();
 
@@ -74,10 +74,6 @@ public class Sampling {
 
         int counter=0;//debug
 
-        //number of asv
-        int asvNum = asv;
-
-
         for (int i = 0; i < 1000; i++) {//sampling the configurations
             boolean flag = true;
 
@@ -124,12 +120,12 @@ public class Sampling {
             }
         }
         for (int i = 0; i < STRAIGHT_SAMPLES_NUM; i++) {//sampling the configurations
-            for(int j=0;j<=10;j++) {
+            //for(int j=0;j<=10;j++) {
             boolean flag = true;
 
                 while (flag) {//sample the point until it has no collision
-
-                    double angle = 0.1*j * 2 * Math.PI - Math.PI; //random an angle
+                    double angle = Math.random() * 2 * Math.PI - Math.PI; //random an angle
+                    //double angle = 0.1*j * 2 * Math.PI - Math.PI; //random an angle
                     polarConfig = straightConfigSampling(angle, asv, ps);//create a polar config
 
 
@@ -145,7 +141,7 @@ public class Sampling {
                     }
 
                 }
-            }
+            //}
         }
 
     }
@@ -212,7 +208,7 @@ public class Sampling {
 
     }
 
-
+//unused
 
     public static void startEdgeSampling(ProblemSpec ps, int asv) {//fix here to 8 direction sampling
         Point2D randomInitPoint;

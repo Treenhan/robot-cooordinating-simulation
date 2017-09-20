@@ -17,32 +17,35 @@ public class Main {
         Sampling.startStraightSampling(problemSpec,problemSpec.getASVCount());
 
 
-
         //Sampling.startEdgeSampling(problemSpec,problemSpec.getASVCount());
 
        // Sampling.startEdgeSampling(problemSpec,problemSpec.getASVCount());//start edge sampling
 
-        EdgeConnection.connectEdges(problemSpec,problemSpec.getASVCount());//connect edges between samplesx4
+        EdgeConnection.connectEdges(problemSpec,problemSpec.getASVCount());//connect edges between samples
 
 
-//        PolarConfig initialPolar = problemSpec.getInitialState().convertToPolar();
- //       PolarConfig goalPolar = problemSpec.getGoalState().convertToPolar();
+       PolarConfig initialPolar = problemSpec.getInitialState().convertToPolar();
+       PolarConfig goalPolar = problemSpec.getGoalState().convertToPolar();
 
-        ArrayList<Double> list = new ArrayList<>();
-        list.add(0.8);
-        list.add(0.8);
-        list.add(2.8);
-        list.add(-2.8);
-        PolarConfig initialPolar = new PolarConfig(list,problemSpec.getASVCount());
+        //TESTTTTTT
+//        ArrayList<Double> list = new ArrayList<>();
+//        list.add(0.8);
+//        list.add(0.8);
+//        list.add(2.8);
+//        list.add(-2.8);
+//        PolarConfig initialPolar = new PolarConfig(list,problemSpec.getASVCount());
+//
+//        initialPolar.convertToRec();
+//
+//        ArrayList<Double> list2 = new ArrayList<>();
+//        list2.add(0.8);
+//        list2.add(0.8);
+//        list2.add(2.5);
+//        list2.add(3.14);
+//        PolarConfig goalPolar = new PolarConfig(list2,problemSpec.getASVCount());
 
-        initialPolar.convertToRec();
+        PolarConfig.distance(initialPolar,goalPolar,problemSpec.getASVCount());
 
-        ArrayList<Double> list2 = new ArrayList<>();
-        list2.add(0.8);
-        list2.add(0.8);
-        list2.add(2.5);
-        list2.add(3.1);
-        PolarConfig goalPolar = new PolarConfig(list2,problemSpec.getASVCount());
 
 
         //add start and end point to the graph

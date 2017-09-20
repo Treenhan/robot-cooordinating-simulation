@@ -1,5 +1,6 @@
 package solution;
 
+import com.trolltech.qt.phonon.AbstractAddon;
 import problem.ASVConfig;
 
 import java.awt.geom.Point2D;
@@ -90,7 +91,26 @@ public class PolarConfig {
         Point2D point = new Point2D.Double((bPoint.getX()+aPoint.getX())/2,(bPoint.getY()+aPoint.getY())/2);
 
         for(int i=0;i<numASV-1;i++){
-            angles.add((bAngles.get(i)+aAngles.get(i))/2);//plus and divide by 2
+            if(bAngles.get(i)*aAngles.get(i)<0){
+                double positiveAngle;
+                double negativeAngle;
+                if(bAngles.get(i)<0){
+                    positiveAngle=aAngles.get(i);
+                    negativeAngle=bAngles.get(i);
+                }else{
+                    positiveAngle=bAngles.get(i);
+                    negativeAngle=aAngles.get(i);
+                }
+
+                double delta = Math.PI*2-Math.abs(positiveAngle)-Math.abs(negativeAngle);
+
+                if(positiveAngle>Math.abs(negativeAngle)){
+                    angles.add(negativeAngle-(delta/2));
+                }else{
+                    angles.add(positiveAngle+(delta/2));
+                }
+            }else angles.add((bAngles.get(i)+aAngles.get(i))/2);//plus and divide by 2
+
         }
 
         return new PolarConfig(point,angles);
@@ -111,6 +131,9 @@ public class PolarConfig {
 
         double angleSquared=0;
         for(int i=0;i<numASV-1;i++){
+            if(bAngles.get(i)*aAngles.get(i)<0){
+                angleSquared += Math.pow(Math.PI*2-Math.abs(bAngles.get(i))-Math.abs(aAngles.get(i)),2);
+            }else
             angleSquared += Math.pow(bAngles.get(i)-aAngles.get(i),2);
         }
 
