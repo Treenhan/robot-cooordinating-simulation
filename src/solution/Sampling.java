@@ -14,11 +14,10 @@ import java.util.Random;
  */
 public class Sampling {
     private Tester tester = new Tester();
-    public static final double BOOM_LENGTH = 0.05;
-    public static final double SAMPLES_NUM = 1000;
+    public static final double SAMPLES_NUM = 2000;
     public static final double COLLISION_SAMPLES_NUM = 5 ;
     public static final double COLLISION_SAMPLING = 0.03;
-    public static final double STRAIGHT_SAMPLES_NUM = 100 ;
+    public static final double STRAIGHT_SAMPLES_NUM = 2000 ;
 
     public static List<PolarConfig> samples = new ArrayList<>();
 
@@ -31,9 +30,6 @@ public class Sampling {
 
         int counter=0;//debug
 
-        //number of asv
-        int asvNum = asv;
-
         for (int i = 0; i < SAMPLES_NUM; i++) {//sampling the configurations
             boolean flag = true;
 
@@ -43,16 +39,14 @@ public class Sampling {
 
                 List<Double> angles = new ArrayList();//create a list of angles
 
-                for (int j = 0; j < asvNum - 1; j++) {
+                for (int j = 0; j < asv - 1; j++) {
                     double angle = Math.random() * 2 * Math.PI - Math.PI; //random an angle
                     angles.add(angle);//put it in the list
                 }
 
                 polarConfig = new PolarConfig(randomInitPoint, angles);//create a polar config
-
                 asvConfig = polarConfig.convertToRec();//convert to rec config
 
-                //TODO check the area or convex
                 if (!tester.hasCollision(asvConfig, ps.getObstacles()) && tester.hasEnoughArea(asvConfig) && tester.isConvex(asvConfig) && tester.fitsBounds(asvConfig)) {
                     samples.add(polarConfig);
                     flag = false;
@@ -67,128 +61,40 @@ public class Sampling {
     }
 
     public static void startStraightSampling(ProblemSpec ps, int asv) {
-
         PolarConfig polarConfig;
         ASVConfig asvConfig;
         Tester tester = new Tester();
 
+        double additionalAngle = decideAdditionalAngle(asv);
         int counter=0;//debug
 
-        for (int i = 0; i < 1000; i++) {//sampling the configurations
-            boolean flag = true;
-
-            while (flag) {//sample the point until it has no collision
-
-
-                polarConfig = straightConfigSamplingSpecial2(Math.PI,asv,ps);//create a polar config
-
-
-                asvConfig = polarConfig.convertToRec();//convert to rec config
-
-                //TODO check the area or convex
-                if (!tester.hasCollision(asvConfig, ps.getObstacles()) && tester.hasEnoughArea(asvConfig) && tester.isConvex(asvConfig) && tester.fitsBounds(asvConfig)) {
-                    samples.add(polarConfig);
-                    flag = false;
-
-                    //debug
-                    System.out.println("add straight ample number: "+counter++);
-                }
-
-            }
-        }
-
-        for (int i = 0; i < 1000; i++) {//sampling the configurations
-            boolean flag = true;
-
-            while (flag) {//sample the point until it has no collision
-
-
-                polarConfig = straightConfigSamplingSpecial4(0,asv,ps);//create a polar config
-
-
-                asvConfig = polarConfig.convertToRec();//convert to rec config
-
-                //TODO check the area or convex
-                if (!tester.hasCollision(asvConfig, ps.getObstacles()) && tester.hasEnoughArea(asvConfig) && tester.isConvex(asvConfig) && tester.fitsBounds(asvConfig)) {
-                    samples.add(polarConfig);
-                    flag = false;
-
-                    //debug
-                    System.out.println("add straight ample number: "+counter++);
-                }
-
-            }
-        }
         for (int i = 0; i < STRAIGHT_SAMPLES_NUM; i++) {//sampling the configurations
-            //for(int j=0;j<=10;j++) {
             boolean flag = true;
 
-                while (flag) {//sample the point until it has no collision
-                    double angle = Math.random() * 2 * Math.PI - Math.PI; //random an angle
-                    //double angle = 0.1*j * 2 * Math.PI - Math.PI; //random an angle
-                    polarConfig = straightConfigSampling(angle, asv, ps);//create a polar config
+            while (flag) {
+                double angle = Math.random() * 2 * Math.PI - Math.PI; //random an angle
 
+                polarConfig = straightConfigSampling(angle, asv, ps,additionalAngle);//create a polar config
+                asvConfig = polarConfig.convertToRec();//convert to rec config
 
-                    asvConfig = polarConfig.convertToRec();//convert to rec config
+                if (!tester.hasCollision(asvConfig, ps.getObstacles()) && tester.hasEnoughArea(asvConfig) && tester.isConvex(asvConfig) && tester.fitsBounds(asvConfig)) {
+                    samples.add(polarConfig);
+                    flag = false;
 
-                    //TODO check the area or convex
-                    if (!tester.hasCollision(asvConfig, ps.getObstacles()) && tester.hasEnoughArea(asvConfig) && tester.isConvex(asvConfig) && tester.fitsBounds(asvConfig)) {
-                        samples.add(polarConfig);
-                        flag = false;
-
-                        //debug
-                        System.out.println("add straight sample number: " + counter++);
-                    }
-
+                    //debug
+                    System.out.println("add straight sample number: " + counter++);
                 }
-            //}
+
+            }
+
         }
 
     }
 
-
-    public static PolarConfig straightConfigSamplingSpecial2(double mainAngle,int asv,ProblemSpec ps){
+    public static PolarConfig straightConfigSampling(double mainAngle,int asv,ProblemSpec ps,double addAngle){
         Point2D randomInitPoint;
 
-        double additinalAngle=0.3;
-
-        randomInitPoint = new Point2D.Double(Math.random()*(0.9-0.1)+0.1, 0.481);//exact point in the hall
-
-        List<Double> angles = new ArrayList();//create a list of angles
-
-        for (int j = 0; j < asv - 1; j++) {
-            if (j == 0) angles.add(mainAngle - additinalAngle);
-            else if (j == asv - 2) angles.add(-mainAngle + additinalAngle);
-            else angles.add(mainAngle);
-        }
-
-        return new PolarConfig(randomInitPoint, angles);//create a polar config
-
-    }
-
-    public static PolarConfig straightConfigSamplingSpecial4(double mainAngle,int asv,ProblemSpec ps){
-        Point2D randomInitPoint;
-
-        double additinalAngle=0.3;
-
-        randomInitPoint = new Point2D.Double(Math.random()*(0.9-0.1)+0.1, 0.518);//exact point in the hall
-
-        List<Double> angles = new ArrayList();//create a list of angles
-
-        for (int j = 0; j < asv - 1; j++) {
-            if (j == 0) angles.add(-mainAngle - additinalAngle);
-            else if (j == asv - 2) angles.add(mainAngle + additinalAngle);
-            else angles.add(mainAngle);
-        }
-
-        return new PolarConfig(randomInitPoint, angles);//create a polar config
-
-    }
-
-    public static PolarConfig straightConfigSampling(double mainAngle,int asv,ProblemSpec ps){
-        Point2D randomInitPoint;
-
-        double additinalAngle=0.3;
+        double additionalAngle=addAngle;
 
                 randomInitPoint = new Point2D.Double(Math.random(), Math.random());//random a first ASV
 
@@ -196,10 +102,10 @@ public class Sampling {
 
                     for (int j = 0; j < asv - 1; j++) {
                         if (j == 0){
-                            angles.add(PolarConfig.boundAngle(mainAngle - additinalAngle));
+                            angles.add(PolarConfig.boundAngle(mainAngle - additionalAngle));
                         }
                         else if (j == asv - 2) {
-                            angles.add(PolarConfig.boundAngle(mainAngle + additinalAngle));
+                            angles.add(PolarConfig.boundAngle(mainAngle + additionalAngle));
                         }
                         else angles.add(mainAngle);
                     }
@@ -208,6 +114,26 @@ public class Sampling {
 
     }
 
+    public static double decideAdditionalAngle(int asv){
+        Tester tester = new Tester();
+        double returnAngle=0.2;
+        double mainAngle=0;
+        Point2D randomInitPoint = new Point2D.Double(Math.random(), Math.random());//random a first ASV
+        List<Double> angles;
+        do {
+            returnAngle+=0.01;
+            angles = new ArrayList();//create a list of angles
+            for (int j = 0; j < asv - 1; j++) {
+                if (j == 0) {
+                    angles.add(PolarConfig.boundAngle(mainAngle - returnAngle));
+                } else if (j == asv - 2) {
+                    angles.add(PolarConfig.boundAngle(mainAngle + returnAngle));
+                } else angles.add(mainAngle);
+            }
+        }while(!tester.hasEnoughArea((new PolarConfig(randomInitPoint,angles)).convertToRec()));
+
+        return returnAngle;
+    }
 //unused
 
     public static void startEdgeSampling(ProblemSpec ps, int asv) {//fix here to 8 direction sampling
@@ -263,68 +189,5 @@ public class Sampling {
         }
     }
 
-    /**
-     * this function construct a sample step by step
-     */
-    public static void stepConfigConstruction(ProblemSpec ps, Point2D initPoint, int numASV){//TODO
-        Point2D point=initPoint;
-        PolarConfig polarConfig;
-        ASVConfig asvConfig;
 
-        Tester tester = new Tester();
-        List<Double> angles = new ArrayList();//create a list of angles
-
-        Point2D tempPoint=initPoint;
-        PolarConfig tempPolarConfig;
-        ASVConfig tempASVConfig;
-        List<Double> tempAngles = new ArrayList();
-
-        //number of asv
-        int asvNum = numASV;
-
-        for(int i=0;i<asvNum-1;i++){
-            double angle = singleStepConfigConstruction(ps,tempPoint);
-
-            angles.add(angle);
-
-            tempAngles.add(angle);
-            tempPolarConfig = new PolarConfig(tempPoint,tempAngles);
-            tempASVConfig=tempPolarConfig.convertToRec();
-            tempPoint=tempASVConfig.getPosition(1);
-
-        }
-
-        polarConfig = new PolarConfig(point,angles);
-        asvConfig = polarConfig.convertToRec();
-
-        if (!tester.hasCollision(asvConfig, ps.getObstacles()) && tester.hasEnoughArea(asvConfig) && tester.isConvex(asvConfig)) {
-            samples.add(polarConfig);
-        }
-
-    }
-
-    public static double singleStepConfigConstruction(ProblemSpec ps, Point2D initPoint){//TODO
-        PolarConfig polarConfig;
-        ASVConfig asvConfig;
-        Tester tester = new Tester();
-        List<Double> angles = new ArrayList();//create a list of angles
-
-        double angle = Math.random() * 2 * Math.PI - Math.PI; //random an angle
-
-        angles.add(angle);
-
-        polarConfig = new PolarConfig(initPoint,angles);
-
-        asvConfig = polarConfig.convertToRec();
-
-        while(tester.hasCollision(asvConfig, ps.getObstacles())){
-            angle = Math.random() * 2 * Math.PI - Math.PI; //random an angle
-            angles.clear();
-            angles.add(angle);
-            polarConfig = new PolarConfig(initPoint,angles);
-            asvConfig = polarConfig.convertToRec();
-        }
-
-        return angle;
-    }
 }

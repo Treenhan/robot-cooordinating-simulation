@@ -11,7 +11,7 @@ import java.util.LinkedList;
  * Created by Treenhan on 9/17/17.
  */
 public class Writer {
-    public static final double MAX_POLAR_STEP = 0.001;
+    public static final double MAX_POLAR_STEP = 0.0005;
 
     PrintWriter writer;
     private PolarConfig end;
@@ -64,6 +64,41 @@ public class Writer {
         for(int j = 0; j < path.size(); j++){
             //debugging
             System.out.println("still printing");
+            writer.println(path.get(j).convertToRec().toString());//print the Polar out
+
+        }
+
+        closeWriter();
+    }
+
+    public void printRoughPath(){
+        path.add(end);
+
+        boolean found=false;
+
+        PolarConfig vertex = end;
+
+        while(!found){
+            if(vertex==start){
+                found=true;
+                continue;
+            }
+
+            //debug
+            System.out.println("still adding path");
+
+            path.add(Search.parents.get(vertex));
+            lineCounter++;
+            vertex=Search.parents.get(vertex);
+        }
+
+
+        pathLength=calculateTotalCost();
+        //writing things out
+        writer.println(lineCounter-1+" "+pathLength);
+        for(int j = 0; j < path.size(); j++){
+            //debugging
+            System.out.println("still printing roughly");
             writer.println(path.get(j).convertToRec().toString());//print the Polar out
 
         }

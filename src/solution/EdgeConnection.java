@@ -24,7 +24,6 @@ public class EdgeConnection {
 
         Flag flag;
 
-
         PolarConfig currentVertex = samples.get(0);
         samples.remove(currentVertex);
 
@@ -34,7 +33,7 @@ public class EdgeConnection {
                 flag = new Flag(true);//reset the flag
 
                 if(Point2D.distance(currentVertex.getPoint().getX(),currentVertex.getPoint().getY(),each.getPoint().getX(),each.getPoint().getY())<=MAX_RADIUS){//if others are inside this circle
-                    EdgeCollision.isEdgeCollisionFree(ps,currentVertex,each,numASV,flag);//this is good
+                    EdgeCollision.isEdgeCollisionFree(ps,currentVertex,each,numASV,flag);
 
                     counter++;
 

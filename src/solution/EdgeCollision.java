@@ -9,7 +9,7 @@ import tester.Tester;
  */
 public class EdgeCollision {
     public static final double BOOM_LENGTH = 0.05;
-    public static final double MIN_DISTANCE = 0.1;
+    public static final double MIN_DISTANCE = 0.01;
 
     private static Tester tester = new Tester();
 
@@ -31,7 +31,7 @@ public class EdgeCollision {
 
             //check for collision
             ASVConfig asvConfig = midConfig.convertToRec();
-            if (tester.hasCollision(asvConfig, ps.getObstacles()) || !tester.hasEnoughArea(asvConfig) || !tester.isConvex(asvConfig)) {
+            if (tester.hasCollision(asvConfig, ps.getObstacles()) || !tester.hasEnoughArea(asvConfig) || !tester.isConvex(asvConfig) || !tester.fitsBounds(asvConfig)) {
                 flag.setFlag(false);
             }
 

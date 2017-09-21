@@ -91,7 +91,7 @@ public class PolarConfig {
         Point2D point = new Point2D.Double((bPoint.getX()+aPoint.getX())/2,(bPoint.getY()+aPoint.getY())/2);
 
         for(int i=0;i<numASV-1;i++){
-            if(bAngles.get(i)*aAngles.get(i)<0){
+            if(Math.abs(aAngles.get(i))+Math.abs(bAngles.get(i))>Math.PI && aAngles.get(i)*bAngles.get(i)<0){
                 double positiveAngle;
                 double negativeAngle;
                 if(bAngles.get(i)<0){
@@ -109,7 +109,9 @@ public class PolarConfig {
                 }else{
                     angles.add(positiveAngle+(delta/2));
                 }
-            }else angles.add((bAngles.get(i)+aAngles.get(i))/2);//plus and divide by 2
+            }
+            else
+                angles.add((bAngles.get(i)+aAngles.get(i))/2);//plus and divide by 2
 
         }
 
@@ -131,8 +133,9 @@ public class PolarConfig {
 
         double angleSquared=0;
         for(int i=0;i<numASV-1;i++){
-            if(bAngles.get(i)*aAngles.get(i)<0){
-                angleSquared += Math.pow(Math.PI*2-Math.abs(bAngles.get(i))-Math.abs(aAngles.get(i)),2);
+
+            if(Math.abs(aAngles.get(i))+Math.abs(bAngles.get(i))>Math.PI && aAngles.get(i)*bAngles.get(i)<0){
+               angleSquared += Math.pow(Math.PI*2-Math.abs(bAngles.get(i))-Math.abs(aAngles.get(i)),2);
             }else
             angleSquared += Math.pow(bAngles.get(i)-aAngles.get(i),2);
         }
@@ -227,15 +230,22 @@ public class PolarConfig {
         end=endPolar.getArray();
 
         //fill the delta array
-        for(int i=0;i<start.size();i++){
-            delta.add(end.get(i)-start.get(i));
-        }
 
+            fillDelta(start,end,delta);
+
+
+
+        double oldDistance = distance(startPolar,endPolar,numASV);//initial distance
         temp=incrementArrays(start,delta,maxAngleStep);
-        while(distance(new PolarConfig(temp,numASV),endPolar,numASV)>maxAngleStep){
+        double newDistance=distance(new PolarConfig(temp,numASV),endPolar,numASV);
+        while(newDistance<oldDistance){
+            oldDistance=newDistance;
             conncectingPoints.add(new PolarConfig(temp,numASV));
             Writer.lineCounter++;
             temp=incrementArrays(temp,delta,maxAngleStep);
+            newDistance=distance(new PolarConfig(temp,numASV),endPolar,numASV);
+
+
         }
 
         return conncectingPoints;
@@ -251,11 +261,45 @@ public class PolarConfig {
      */
     public static ArrayList<Double> incrementArrays(ArrayList<Double>start,ArrayList<Double>delta,double step) {
         ArrayList<Double> list = new ArrayList<>();
+
         for (int i = 0; i < start.size(); i++) {
+            if(i>=2){//special calculation for angles
+
+                if(Math.abs(start.get(i)+delta.get(i)*step)>Math.PI) {
+                    if(start.get(i)<0)
+                    list.add(-1 * (start.get(i) + (delta.get(i) * step) +0.0005));//-0.0005 this the max polar step to prevent stop incrementing when intial angle is -Pi
+                    else{
+                        list.add(-1 * (start.get(i) + (delta.get(i) * step) -0.0005));
+                    }
+
+
+                }
+                else
+                    list.add(start.get(i) + delta.get(i) * step);
+            }else
             list.add(start.get(i) + delta.get(i) * step);
 
         }
         return list;
+    }
+
+    public static ArrayList<Double> fillDelta(ArrayList<Double>start,ArrayList<Double>end,ArrayList<Double>delta){
+        for (int i = 0; i < start.size(); i++) {
+            if(i>=2){//special calculation for angles delta
+                if(Math.abs(start.get(i))+Math.abs(end.get(i))>Math.PI && start.get(i)*end.get(i)<0) {
+                    if(start.get(i)>0) delta.add(Math.PI*2-Math.abs(start.get(i))-Math.abs(end.get(i)));
+                    else delta.add(-(Math.PI*2-Math.abs(start.get(i))-Math.abs(end.get(i))));
+
+                }else
+                    delta.add(end.get(i)-start.get(i));
+
+            }else
+                delta.add(end.get(i)-start.get(i));
+
+        }
+
+        return delta;
+
     }
 
 }
