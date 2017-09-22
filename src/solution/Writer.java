@@ -12,7 +12,6 @@ import java.util.LinkedList;
  */
 public class Writer {
     public static final double MAX_POLAR_STEP = 0.0005;
-
     PrintWriter writer;
     private PolarConfig end;
     private PolarConfig start;
@@ -37,6 +36,7 @@ public class Writer {
      * only use this function when you reach the goal
      */
     public void printPath(){
+        System.out.println("Start printing the solution...");
         path.add(end);
 
         boolean found=false;
@@ -49,8 +49,6 @@ public class Writer {
                 continue;
             }
 
-            //debug
-            System.out.println("still adding path");
 
             path.add(Search.parents.get(vertex));
             vertex=Search.parents.get(vertex);
@@ -62,8 +60,7 @@ public class Writer {
         //writing things out
         writer.println(lineCounter+" "+pathLength);
         for(int j = 0; j < path.size(); j++){
-            //debugging
-            System.out.println("still printing");
+
             writer.println(path.get(j).convertToRec().toString());//print the Polar out
 
         }

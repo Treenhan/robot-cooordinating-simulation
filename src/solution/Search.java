@@ -30,10 +30,12 @@ public class Search {
     /**
      * main search using BFS
      */
-    public void startBFSSearch()throws java.io.IOException{
+    public void startBFSSearch(String outputFile)throws java.io.IOException{
+        System.out.println("Start BFS Searching...");
+
         Flag foundSolution = new Flag(false);
 
-        Writer writer = new Writer("solution.txt",start,end,numASV);
+        Writer writer = new Writer(outputFile,start,end,numASV);
         parents = new HashMap<>(); //clean the parents
         visited = new HashSet<>();//clean the visited list
 
@@ -63,8 +65,6 @@ public class Search {
                     break;
                 }
 
-                //debugging
-                System.out.println("visiting: "+newChild);
 
                 if(!visited.contains(newChild)){//if this guy is not visited yet
                     queue.add(newChild);

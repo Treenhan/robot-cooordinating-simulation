@@ -12,10 +12,10 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String [] args) throws java.io.IOException {
         ProblemSpec problemSpec = new ProblemSpec();
-        problemSpec.loadProblem("problems/09.txt");//all configurations are in here now
+        problemSpec.loadProblem(args[0]);
 
         Sampling.startSampling(problemSpec,problemSpec.getASVCount());//start sampling
-      //Sampling.startStraightSampling(problemSpec,problemSpec.getASVCount());
+        if(problemSpec.getASVCount()<10) Sampling.startStraightSampling(problemSpec,problemSpec.getASVCount());
 
         EdgeConnection.connectEdges(problemSpec,problemSpec.getASVCount());//connect edges between samples
 
@@ -62,7 +62,7 @@ public class Main {
         EdgeConnection.connectEdgesForTargets(problemSpec,problemSpec.getASVCount(),initialPolar,goalPolar);
 
         Search search = new Search(initialPolar,goalPolar,problemSpec.getASVCount());
-        search.startBFSSearch();
+        search.startBFSSearch(args[1]);
 
         //start searching
 

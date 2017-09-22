@@ -267,9 +267,9 @@ public class PolarConfig {
 
                 if(Math.abs(start.get(i)+delta.get(i)*step)>Math.PI) {
                     if(start.get(i)<0)
-                    list.add(-1 * (start.get(i) + (delta.get(i) * step) +0.0005));//-0.0005 this the max polar step to prevent stop incrementing when intial angle is -Pi
+                    list.add(-1 * (start.get(i)));//-0.0005 this the max polar step to prevent stop incrementing when intial angle is -Pi
                     else{
-                        list.add(-1 * (start.get(i) + (delta.get(i) * step) -0.0005));
+                        list.add(-1 * (start.get(i)));
                     }
 
 
