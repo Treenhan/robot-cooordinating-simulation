@@ -12,7 +12,8 @@ import java.util.Properties;
  * Created by Treenhan on 9/13/17.
  */
 public class EdgeConnection {
-    public static final double MAX_RADIUS = 0.1;
+    public static final double MAX_RADIUS = 0.1;//original 0.1
+    public static final double MAX_RADIUS_FOR_START_END = 10;//original 0.1
 
     /**
      * connect all the graph together
@@ -67,17 +68,19 @@ public class EdgeConnection {
             for(PolarConfig each : samples){
                 flag = new Flag(true);//reset the flag
 
-                if(Point2D.distance(currentVertex.getPoint().getX(),currentVertex.getPoint().getY(),each.getPoint().getX(),each.getPoint().getY())<=MAX_RADIUS){//if others are inside this circle
+                if(Point2D.distance(currentVertex.getPoint().getX(),currentVertex.getPoint().getY(),each.getPoint().getX(),each.getPoint().getY())<=MAX_RADIUS_FOR_START_END){//if others are inside this circle
                     EdgeCollision.isEdgeCollisionFree(ps,currentVertex,each,numASV,flag);//this is good
 
-                    //debugging
-                    if(i==0)System.out.println("start-OK"+counter);
-                    else System.out.println("end-OK"+counter);
 
-                    counter++;
+
+
 
                     if(flag.getFlag()){//if the other point is collision free
+                        counter++;
                         AdjacencyList.addEdge(currentVertex,each);
+                        //debugging
+                        if(i==0)System.out.println("start-OK"+counter);
+                        else System.out.println("end-OK"+counter);
                     }
                 }
             }
