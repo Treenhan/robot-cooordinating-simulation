@@ -1,6 +1,6 @@
-<project name="a2-3702-Gold" default="main" basedir=".">
+<project name="coordinating-simulation" default="main" basedir=".">
 
-    <property name="projectName" value="a2-3702-Gold" />
+    <property name="projectName" value="oordinating-simulation" />
 
     <!-- Java sources -->
     <property name="src.dir" location="src" />
