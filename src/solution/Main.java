@@ -3,14 +3,13 @@ package solution;
 import problem.ASVConfig;
 import problem.ProblemSpec;
 
-import java.util.ArrayList;
-
 
 /**
  * Created by Treenhan on 9/9/17.
  */
 public class Main {
     public static void main(String [] args) throws java.io.IOException {
+        System.out.println("---PROGRAM STARTED---\n");
         ProblemSpec problemSpec = new ProblemSpec();
         problemSpec.loadProblem(args[0]);
 
@@ -22,7 +21,7 @@ public class Main {
        PolarConfig initialPolar = problemSpec.getInitialState().convertToPolar();
        PolarConfig goalPolar = problemSpec.getGoalState().convertToPolar();
 //-------------------
-        //TESTTTTTT
+        //FOR DEBUGGING
         //POLAR
 //        ArrayList<Double> list = new ArrayList<>();
 //        list.add(0.49776);
@@ -62,11 +61,25 @@ public class Main {
         EdgeConnection.connectEdgesForTargets(problemSpec,problemSpec.getASVCount(),initialPolar,goalPolar);
 
         Search search = new Search(initialPolar,goalPolar,problemSpec.getASVCount());
-        search.startBFSSearch(args[1]);
+
+        Flag hardcoreFlag = new Flag(false);
+
+        search.startBFSSearch(args[1],hardcoreFlag);
+
+        if(hardcoreFlag.getFlag()){
+            System.out.println("HARDCORE MODE ACTIVATED");
+            Sampling.SAMPLES_NUM=1000;
+            Sampling.STRAIGHT_SAMPLES_NUM=2000;
+            Sampling.startSampling2(problemSpec,problemSpec.getASVCount());//start sampling
+            if(problemSpec.getASVCount()<10) Sampling.startStraightSampling2(problemSpec,problemSpec.getASVCount());
+            EdgeConnection.connectEdges2(problemSpec,problemSpec.getASVCount());
+            EdgeConnection.connectEdgesForTargets2(problemSpec,problemSpec.getASVCount(),initialPolar,goalPolar);
+            search.startBFSSearch(args[1],hardcoreFlag);
+        }
 
         //start searching
 
-        System.out.println("DONE");
+        System.out.println("\n---PROGRAM TERMINATED---");
 
 
     /*

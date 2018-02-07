@@ -1,8 +1,5 @@
 package solution;
 
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
-
-import javax.xml.bind.SchemaOutputResolver;
 import java.util.*;
 
 /**
@@ -30,7 +27,7 @@ public class Search {
     /**
      * main search using BFS
      */
-    public void startBFSSearch(String outputFile)throws java.io.IOException{
+    public void startBFSSearch(String outputFile, Flag hardcoreFlag)throws java.io.IOException{
         System.out.println("Start BFS Searching...");
 
         Flag foundSolution = new Flag(false);
@@ -58,7 +55,7 @@ public class Search {
 
                 if(newChild==end) {
                     parents.put(newChild,current);
-                    System.out.println("WE ARE WINNERSSS!!!");//stop condition
+                    System.out.println("SOLUTION FOUND!");//stop condition
                     foundSolution.setFlag(true);
                     writer.printPath();
                     visited.add(newChild);
@@ -76,8 +73,12 @@ public class Search {
         }
 
         if(!visited.contains(end)) {
-            System.out.println("WE ARE losersss");
+
+            System.out.print("SOLUTION NOT FOUND. ");
             writer.closeWriter();
+            hardcoreFlag.setFlag(true);
+
+
         }
 
 

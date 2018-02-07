@@ -68,6 +68,7 @@ public class Writer {
         closeWriter();
     }
 
+    //this function is for debugging
     public void printRoughPath(){
         path.add(end);
 

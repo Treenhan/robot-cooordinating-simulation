@@ -47,12 +47,69 @@ public class EdgeConnection {
         }
     }
 
+    public static void connectEdges2(ProblemSpec ps,int numASV) {
+        ArrayList<PolarConfig> samples2 = new ArrayList<PolarConfig>(Sampling.samples2);
+        ArrayList<PolarConfig> samples = new ArrayList<PolarConfig>(Sampling.samples);
+        Flag flag;
+
+        PolarConfig currentVertex = samples2.get(0);
+        samples2.remove(currentVertex);
+
+        System.out.println("Start connecting edges...");
+
+        while (!samples2.isEmpty()){
+
+            for(PolarConfig each : samples){
+                flag = new Flag(true);//reset the flag
+
+                if(Point2D.distance(currentVertex.getPoint().getX(),currentVertex.getPoint().getY(),each.getPoint().getX(),each.getPoint().getY())<=MAX_RADIUS){//if others are inside this circle
+                    EdgeCollision.isEdgeCollisionFree(ps,currentVertex,each,numASV,flag);
+                    if(flag.getFlag()){//if the other point is collision free
+                        AdjacencyList.addEdge(currentVertex,each);
+
+                    }
+                }
+            }
+            samples2.remove(currentVertex);//remove this currentVertex
+            currentVertex=samples2.get(0);//take in the new current vertex
+            samples2.remove(currentVertex);
+        }
+    }
+
     /**
      * connect the init and the goal to the connected graph
      */
     public static void connectEdgesForTargets(ProblemSpec ps, int numASV, PolarConfig startPolar, PolarConfig endPolar) {
         if(numASV>10) MAX_RADIUS_FOR_START_END=3;
         ArrayList<PolarConfig> samples = new ArrayList<PolarConfig>(Sampling.samples);
+
+        Flag flag;
+
+        PolarConfig currentVertex = startPolar;
+
+        for(int i=0;i<2;i++){
+            for(PolarConfig each : samples){
+                flag = new Flag(true);//reset the flag
+
+                if(Point2D.distance(currentVertex.getPoint().getX(),currentVertex.getPoint().getY(),each.getPoint().getX(),each.getPoint().getY())<=MAX_RADIUS_FOR_START_END){//if others are inside this circle
+                    EdgeCollision.isEdgeCollisionFree(ps,currentVertex,each,numASV,flag);//this is good
+
+
+
+
+
+                    if(flag.getFlag()){//if the other point is collision free
+                        AdjacencyList.addEdge(currentVertex,each);
+                    }
+                }
+            }
+            currentVertex=endPolar;
+        }
+    }
+
+    public static void connectEdgesForTargets2(ProblemSpec ps, int numASV, PolarConfig startPolar, PolarConfig endPolar) {
+        if(numASV>10) MAX_RADIUS_FOR_START_END=3;
+        ArrayList<PolarConfig> samples = new ArrayList<PolarConfig>(Sampling.samples2);
 
         Flag flag;
 

@@ -1,6 +1,6 @@
 package solution;
 
-import com.trolltech.qt.phonon.AbstractAddon;
+
 import problem.ASVConfig;
 
 import java.awt.geom.Point2D;
