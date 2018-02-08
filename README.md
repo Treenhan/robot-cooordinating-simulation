@@ -4,8 +4,11 @@ In this project, I am asked to write a program to find a path for a robot to go 
 ## Input File
 This file contains the structure of the maze. The file consists of k+4 lines, where k is the number of obstacles.
 The first line is the number of joints, denoted as n.
+
 The next two lines are the start and ending configurations written in x-y coordinate. Each couple of number represents x and y position of a joint.
+
 The fourth line is the number of obstacles.
+
 Each line in the last k lines represents the vertices of each rectangular obstacle. Each rectangular obstacle is written as a quadruple of the x-y coordinates of its vertices in counter-clockwise order, starting with the lower-left vertex.
 
 ## Output File
