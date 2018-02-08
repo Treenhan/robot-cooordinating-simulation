@@ -13,13 +13,22 @@ Each line in the last k lines represents the vertices of each rectangular obstac
 
 ## Output File
 After running the program on the input file, an output text file will be produced.
+
 The file consists of m+2 lines. The first line is the number of primitive steps, denoted as m, and the total length of the path, separated by a single white space. The next line is the initial configuration, and then each line in the next m lines contains the position of each joint at the end of every primitive step.
 
-##Simulator
+## Visualiser
+The visualiser will read the input + output files and demonstrate the result.
+
+To see the result of a problem. Open the visualiser and load the input + output files.
 
 ## Installation
 1. Change the working directory into the repository.
 2. Run "ant" to build everything or "ant clean" to clean everything
 3. The executable jar file will be inside the "dist" folder after building everything.
-4. Change the working directory into "dist" and run the program by typing:
+
+## To solve a problem
+To solve a problem, change the working directory into "dist" and run the program by typing:
 "java -jar coordinating-simulation.jar [input file] [output file]"
+
+## To visualise a solved problem
+Run the compiled dist/Visualiser.jar and import the input + output files.
